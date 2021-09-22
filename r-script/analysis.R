@@ -1,17 +1,10 @@
-install.packages("tidytext")
-install.packages(c("RedditExtractoR", "tm", "syuzhet", "dplyr", "lubridate"))
-install.packages("corrplot")
+############################################################################################
 
-library(lubridate)
 library(syuzhet)
-library(tm)
 library(tidyverse)
-library(rmarkdown)
-library(tidytext)
+library(lubridate)
 
-
-
-#Cleaning Phase
+############################################################################################
 
 comment17 = na.omit(read_csv("Reddit Comments/2017.csv"))
 comment18 = na.omit(read_csv("Reddit Comments/2018.csv"))
@@ -40,7 +33,7 @@ comment18$comment = tolower(comment18$comment)
 comment19$comment = tolower(comment19$comment)
 comment20$comment = tolower(comment20$comment)
 
-#Sentiment Analysis
+############################################################################################
 
 comment17$created = strptime(comment17$created, format = "%Y-%m-%d %H:%M")
 comment18$created = strptime(comment18$created, format = "%Y-%m-%d %H:%M")
@@ -90,12 +83,9 @@ comment20$month = ordered(comment20$month,
                                         "November", "December"))
 
 
-View(comment17)
 ############################################################################################
 
 sentiment17 = get_nrc_sentiment(comment17$comment)
-
-View(sentiment17)
 
 data17 = 
   sentiment17 %>%
@@ -103,22 +93,17 @@ data17 =
 
 sentiment18 = get_nrc_sentiment(comment18$comment)
 
-View(sentiment18)
-
 data18 = 
   sentiment18 %>%
   select(negative, positive)
 
 sentiment19 = get_nrc_sentiment(comment19$comment)
 
-View(sentiment19)
-
 data19 = 
   sentiment19 %>%
   select(negative, positive)
 
 sentiment20 = get_nrc_sentiment(comment20$comment)
-View(sentiment20)
 
 data20 = 
   sentiment20 %>%
@@ -131,6 +116,8 @@ analysis18 = cbind(comment18, data18)
 analysis19 = cbind(comment19, data19)
 
 analysis20 = cbind(comment20, data20)
+
+View(analysis17)
 
 ############################################################################################
 
@@ -157,32 +144,9 @@ data20V2 =
 ############################################################################################
 
 finalData = rbind(data17V2, data18V2 ,data19V2, data20V2)
-View(finalData)
-
-
-
-ggplot(finalData) +
-  geom_col(aes(x = month, y = negMean, fill = year),
-           position = "dodge") +
-  coord_cartesian(ylim = c(0.6, 1.1)) +
-  facet_grid(~year)
-
-ggplot(finalData) +
-  geom_smooth(aes(x = negMean, y = posMean), method = lm) +
-  labs(x = "Positive Mean",
-       y = "Negative Mean")
-
-finalData %>%
-  cor(negMean, posMean)
-
 
 View(finalData)
-
-max(finalData$negMean)
-
-cor(finalData$negMean, finalData$posMean)
 
 write.csv(finalData, file = 'finalData.csv')
 
-
-drop(comments)
+############################################################################################

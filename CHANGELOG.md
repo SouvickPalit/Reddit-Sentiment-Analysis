@@ -4,7 +4,6 @@
     - lubridate
     - syuzhet
     - tidyverse
-    - tidytext
 - Variables were created for the purpose of storing the data from the .csv files.
 - Alpha Numeric and Foreign characters were removed.
 - All comments were turned into lowercase

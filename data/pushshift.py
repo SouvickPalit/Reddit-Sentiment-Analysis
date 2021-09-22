@@ -1,3 +1,5 @@
+#This code was used as reference for making this one https://rareloot.medium.com/using-pushshifts-api-to-extract-reddit-submissions-fb517b286563
+
 import pandas as pd
 import requests
 import json
